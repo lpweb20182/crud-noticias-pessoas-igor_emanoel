@@ -1,0 +1,22 @@
+<h1>Alterar Autores</h1>
+<br>
+<form class="mt-1" #cadastro="ngForm" (submit)="salvar()">
+  <div *ngIf="salvar_ok" class="alert alert-success">
+    Notícia alterada com sucesso!
+  </div>
+  <div *ngIf="salvar_erro" class="alert alert-warning">
+    Não foi possível alterar a notícia. Tente novamente dentro de instantes.
+  </div>
+  <div class="form-group">
+    <label for="nome">Nome</label>
+    <input type="text" class="form-control" name="nome" id="nome" [(ngModel)]="nome" value= "nome" required>
+  </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" class="form-control" name="email" id="email" [(ngModel)]="email" value= "email" required>
+  </div>
+ 
+  <div>
+    <button class="btn btn-primary">Salvar</button>
+  </div>
+</form>

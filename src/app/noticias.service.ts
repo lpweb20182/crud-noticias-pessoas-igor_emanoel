@@ -6,6 +6,7 @@ import { Database } from './database.model';
 import { forkJoin, from, of } from 'rxjs';
 import { AutoresService } from './autores.service';
 import { AutenticacaoService } from './api.service';
+import { Autor } from './autor.model';
 
 /**
  * Serviço que encapsula e implementa as funcionalidades de acesso a dados de notícias.
@@ -15,6 +16,7 @@ import { AutenticacaoService } from './api.service';
 })
 export class NoticiasService {
   API_URL = 'http://localhost:8000/api/noticias/';
+  API_URL_MIDIA = 'http://localhost:8000/media/';
 
   constructor(private http: HttpClient, private autores: AutoresService, private auth: AutenticacaoService) {
   }
@@ -92,8 +94,38 @@ export class NoticiasService {
       );
   }
 
-  public salvar(titulo: string, resumo: string, conteudo: string, autor: any, data: string, publicada: boolean, destaque: boolean) {
+  public salvar_imagem(imagem){
     const options = this.getHeaders();
+    console.log(imagem)
+    const url = this.API_URL_MIDIA + '1' + '/';
+    return this.http.post(url, imagem, options);
+
+  }
+
+  public salvar(titulo: string, resumo: string, conteudo: string, autor: any, data: string, publicada: boolean, destaque: boolean, imagen:any) {
+    const options = this.getHeaders();
+    const noticia = {
+      titulo: titulo,
+      resumo: resumo,
+      conteudo: conteudo,
+      autor: autor,
+      data: data,
+      publicada: publicada,
+      destaque: destaque,
+      imagem:imagen
+    };
+    return this.http.post(this.API_URL, noticia, options);
+  }
+
+  public deletar (noticia){
+    const options = this.getHeaders();
+    const url = this.API_URL + noticia.id + '/'
+    return this.http.delete(url,options)
+  }
+
+  public alterar( id:Number, titulo: string, resumo: string, conteudo: string, autor: any, data: string, publicada: boolean, destaque: boolean){
+    const options = this.getHeaders();
+    let url =this.API_URL + id + '/'
     const noticia = {
       titulo: titulo,
       resumo: resumo,
@@ -103,6 +135,6 @@ export class NoticiasService {
       publicada: publicada,
       destaque: destaque
     };
-    return this.http.post(this.API_URL, noticia, options);
+    return this.http.put(url, noticia, options)
   }
 }
